@@ -36,11 +36,14 @@ export class UserTestData implements TestDataSource {
 
   // TODO: clean table
   async cleanTable(client: PostgresClient): Promise<void> {
-    const done = await client.disconnect();
-    const databaseCleaner = new DatabaseCleaner('postgresql');
-
-    databaseCleaner.clean(client, done);
+    await client.query('DROP TABLE [IF EXISTS] users [CASCADE];');
   }
+  // async cleanTable(client: PostgresClient): Promise<void> {
+  //   const done = await client.disconnect();
+  //   const databaseCleaner = new DatabaseCleaner('postgresql');
+
+  //   databaseCleaner.clean(client, done);
+  // }
 
   // async cleanES(): void {
   //   // const done = await this.disconnectDB(client);
