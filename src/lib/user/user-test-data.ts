@@ -1,4 +1,5 @@
 import { faker } from '@faker-js/faker';
+import { DatabaseCleaner } from 'database-cleaner';
 import { PostgresClient } from '../../core/data-access/postgres-client';
 import { TestDataSource } from '../test-data-source';
 import { permissionSetIdToPermissionSet } from './permission/permission-set-map';
@@ -34,6 +35,18 @@ export class UserTestData implements TestDataSource {
   }
 
   // TODO: clean table
+  async cleanTable(client: PostgresClient): Promise<void> {
+    const done = await client.disconnect();
+    const databaseCleaner = new DatabaseCleaner('postgresql');
+
+    databaseCleaner.clean(client, done);
+  }
+
+  // async cleanES(): void {
+  //   // const done = await this.disconnectDB(client);
+  //   const databaseCleaner = new DatabaseCleaner('elasticsearch');
+  //   databaseCleaner.clean(client, done);
+  // }
 
   async disconnectDB(client: PostgresClient): Promise<void> {
     await client.disconnect();
